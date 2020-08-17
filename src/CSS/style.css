@@ -70,7 +70,7 @@ ul{
     content:'▶';
 }
 
-.card_title--is-open:befor{
+.card_title--is-open:before{
     content:'▼';
 }
 .checklist_task:first-child{
@@ -82,4 +82,11 @@ ul{
     display:inline-block;
     color:#d66;
     content:"+";
+}
+.checklist--add-task{
+    border:1px dashed #bbb;
+    width:100%;
+    padding : 10px;
+    margin-top:5px;
+    border-radius:3px;
 }
