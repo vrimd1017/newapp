@@ -1,68 +1,56 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+위키북스의 '프로 리액트'라는 책을 보고 리액트를 공부해 보려고 합니다.
 
-## Available Scripts
+이전에 잠깐이지만 인터넷을 찾아보고, https://velopert.com 에 소개되어있더 리액트를 보면서 얇게나마 공부를 해봤었습니다.
 
-In the project directory, you can run:
+다만, 예제를 따라하면서 봤던것들과, 직접 구상해 구현하는것에는 너무 큰 차이가 있었고 다시 공부를 해야겠다고 생각했었습니다.
 
-### `yarn start`
+마침 이 책을 접할 기회가 되어서 공부를 해 보려고 합니다.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+어떤 개념이 책에 담겨있었는지를 간단히(?) 정리할 생각이라, 이전에 Velopert.com을 통해 정리했던 내용과 같이 보면 되지 않을까, 라는 생각을 하고있습니다.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+-----------------------------------------------------------------------------------------------
 
-### `yarn test`
+# React.js
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+React는 JavaScript와 (선택적인)XML사용을 통해 조합형 사용자 인터페이스를 구축하는 일종의 엔진입니다.
+이 책에서 React를 엔진이라고 하는 이유는, React의 핵심 장점중 하나인 반응현 UI 렌더링 잘 나타내는 용어라는 이유를 들고있습니다.
+React의 핵심개념, 목표는 UI의 생성과 유지 관리의 복잡성을 줄이는 것이며, 이를 위해서 UI를 컴포넌트로 분리하는 개념을 이용하고 있습니다.
+컴포넌트라는 특정 목적을 가진 독립형 구성요소를 사용함으로써 재사용과 확장, 유지관리가 쉬워지게 되는 장점을 가지게 됩니다.
 
-### `yarn build`
+## React.js의 장점
+단일 페이지 어플리케이션이전에는 사용자와 페이지간 상호작용에 있어서 이를 처리하기 위해서는 사소한변화라도 완전히 새로운 페이지를 서버로부터 불러와야만 했습니다.
+단일 페이지 어플리케이션이라는 개념이 생겨나면서 사용자와 상호작용하는 동안 끊임없이 새로운 데이터를 가져오고, 이를 DOM에 반영하게 되었습니다.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+반응형 렌더링은 그저 정의만 해두면, 리액트가 데이터의 변경을 감지하고 개념상, 전체 인터페이스를 다시 렌더링하는것을 의미합니다.
+이때, 실제 DOM에 전체 인터페이스를 다시 렌더링하는것은 비용이 매우 큰 작업이며, 여기서 _VirtualDOM_이라는 개념이 등장합니다.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### VirtualDOM
+VirtualDOM. 말 그대로 가상의 DOM입니다.
+실제 데이터의 변경시마다 실제 DOM 전체를 다시 그리는것은 비용이 큰 작업이기때문에, 리액트에서는 VirtualDOM을 사용하게 됩니다.
+리액트는 어플리케이션의 상태가 달라질 때 UI의 현재상태와 원하는 상태를 비교하고, 변경의 최소집합으로 VirtualDOM을 이용하여 변화가 생긴 부분만을 렌더링하게 됩니다.
+책의 뒷부분인가 좀 더 내용이 나왔던거같은데.. 
+나중에 포스팅때에는 이전에 정리해두었던 VirtualDOM에 대한 내용을 참고해야될것 같습니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 순수 자바스크립트를 이용한 컴포넌트 기반 개발
+리액트 어플리케이션의 모든 부분은 특정한 목적을 가진 독립형 구성요소인 컴포넌트로 구성됩니다.
+리액트의 경우 기존 웹 어플리케이션의 UI가 HTML과 같은 마크업언어를 통해 UI를 표시하던것과는 다르게, 일반 자바스크립트 언어를 사용하게 됩니다.
+완전한 기능을 갖춘 프로그래밍언어를 사용하므로써 추상화를 구축하는 데 큰 장점이 있습니다.
+컴포넌트는 독립적이며, 뷰 논리에 대하여 마크업 언어를 사용함으로써 관심사의 분리를 돕게됩니다.
+이런 방식은 관심사의 강제 분리를 위해 서로 다른 언어로써(HTML, CSS, Javascript)구조, 스타일링, 동작을 구현하였고, 정적인 프레젠테이션 스타일에서는 효과적이였지만,
+현재의 인터페이스는 더 복잡하며, 어쩔 수 없이 표시 논리와 마크업이 서로 연관되게 됩니다.
+결론적으로 리액트에서는 표시 논리와 마크업이 서로 연관되어있다고 가정하게됩니다.
+리액트는 이 둘 모두 UI를 표시하는 역할을 하며, 각 관심사에 대해 독립적이고, 잘 캡슐화되며, 재사용 가능한 컴포넌트를 만드는 방식으로 관심사의 분리를 권장합니다.
 
-### `yarn eject`
+### 문서 모델의 유연한 추상화
+리액트는 기반 문서 모델을 추상화하는, UI의 경량 표현을 자체적으로 가지고있습니다.
+이를통해 웹용 HTML은 물론, iOS와 안드로이드 뷰를 렌더링 할 때에도 동일한 원칙을 적용할 수 있게됩니다.
+예를들어 onclick과 같은 이벤트가 모든 브라우저와 장치에서 자동으로 위임을 이용해, 일관되고 표준을 준수하는 방식으로 작동됩니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## JSX
+ㅇ
+JSX를 자바스크립트로 변환하는 단계가 필요함.
+ㅇ
+JSX를 이용하게되면 아래와 같은 장점이 있습니다.
+1. 선언식 구문을 이용할 수 있다.
+2. 표현성이 좋다.
+3. 일반 자바스크립트 함수 호출로 변환되어, 언어의 의미를 바꾸지 않는다.
