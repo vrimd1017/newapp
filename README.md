@@ -60,7 +60,7 @@ JSX를 이용하게되면 아래와 같은 장점이 있습니다.
 
 아래는 그냥 JSX관련해서 잠깐 궁금했던 사항이라고나할까..
 React소스를 보게 되면 제일 위에 이런 import문이 적혀있는것을 볼 수 있습니다.
-
+```javascript
     import React from 'react';
     Class Hello extends React.Component{
         ...
@@ -70,7 +70,7 @@ React소스를 보게 되면 제일 위에 이런 import문이 적혀있는것�
     Class Hello extends Component{
         ...
     }
-
+```
 보통 컴포넌트 클래스를 만들 때 위와같은 방식으로 작성 할 수 있게됩니다.
 위의 두 코드를 보고 그저 _'import {Component} from 'react''_ 라고 적으면 실행되지 않을까? 라는 생각을 했었는데 
 결론은 실행되지 않았습니다.
@@ -81,13 +81,14 @@ React소스를 보게 되면 제일 위에 이런 import문이 적혀있는것�
 JSX를 사용하면서 let/var 등으로 Local변수를 선언한 후에 이 값을 JSX내에서 렌더링시에 사용 할 수 있습니다.
 아래와 같이 중괄호를 통해 표현합니다.
 
-    render(){
-        var name="SeokJu";
-        return(
-            <h1>{name}</h1>
-        );
-    }
-
+```javascript
+render(){
+    var name="SeokJu";
+    return(
+        <h1>{name}</h1>
+    );
+}
+```
 ---------------------------------------------
 
 ## 속성과 상태(Proprty / State)
@@ -96,7 +97,7 @@ JSX를 사용하면서 let/var 등으로 Local변수를 선언한 후에 이 값
 속성이란, 부모 컴포넌트에서 자식 컴포넌트로 데이터를 전송하는 것으로, 자식컴포넌트에서는 이를 변경할 수 없으며, 속성은 부모가 소유하게 됩니다.
 
 _부모컴포넌트_
-
+```javascript
     class User extends Component{
         render(){
             <div>
@@ -104,9 +105,9 @@ _부모컴포넌트_
             </div>
         }
     }
-
+```
 _자식컴포넌트_
-
+```javascript
     class UserInfo extends Component{
         render(){
             return(
@@ -114,7 +115,7 @@ _자식컴포넌트_
             );
         }
     }
-
+```
 __'Kang SeokJu : 25'__ 
 
 위의 코드와 같이, 부모는 컴포넌트의 속성을 통해서 자식컴포넌트에 데이터를 전송합니다.
