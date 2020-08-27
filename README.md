@@ -50,13 +50,160 @@ VirtualDOM. 말 그대로 가상의 DOM입니다.
 -----------------------------------
 
 ## JSX
-ㅇ
-JSX를 자바스크립트로 변환하는 단계가 필요함.
-ㅇ
+리액트에서 자바스크립트 코드 안에 선언적인 XML스타일의 구문을 작성할 수 있게 해주는 리액트의 선택적 자바스크립트 구문 확장입니다.
+트랜스파일이라는 브라우저나 서버가 코드를 해석 할 수 있도록 자바스크립트로 변환하는 과정을 거치게 되면, XML구문은 리액트 라이브러리에대한 함수 호출로 변환됩니다.
+```javascript
+    return(
+        <div>
+            <h1>Hello World</h1>
+            <h2>React Study</h2>
+        </div>
+    )
+```
+위의 코드는 트랜스파일을 거치게 되면 아래와 같은 함수 호출로 변환됩니다.
+```javascript
+    return React.createElement("div", null,
+        React.createElement("h1", null, "Hello World"),
+        React.creatElement("h2", null, "React Study")
+    )
+```
+
+# JSX의 장점
+```
 JSX를 이용하게되면 아래와 같은 장점이 있습니다.
-1. 선언식 구문을 이용할 수 있다.
-2. 표현성이 좋다.
+1. 선언식 구문을 이용할 수 있다. XML은 특성을 이용한 요소트리로 UI를 표현하는데 적합하다.
+2. 표현성이 좋다. 어플리케이션의 구조를 시각화하기 쉬우며 더 간결하다.
 3. 일반 자바스크립트 함수 호출로 변환되어, 언어의 의미를 바꾸지 않는다.
+```
+
+# JSX와 HTML의 차이점
+```
+HTML과 비슷하게 웹 인터페이스를 표현하지만, JSX는 HTML과는 아래와 같은 차이점이 있습니다.
+1. 낙타표기법을 사용한다.
+:: 기존 HTML에서 태그의 속성이름은 소문자로 작성했던것과는 다르게, JSX에서는 낙타 표기법을 사용합니다(ex. maxlength --> maxLength)
+2. 모든 요소는 짝이 맞아야 한다.
+:: JSX는 XML이기때문에 태그를 열고 닫는데에 있어서 엄격한 검사를 수행합니다. HTML과는 다르게 태그가 열렸다면 닫혀야만 합니다. <br>태그도 <br/>를 사용해야 합니다.
+3. 특성 이름이 HTML이 아닌, DOM API에 기반을 둔다.
+:: JSX는 자바스크립트의 구문확장이기때문에 HTML속성이 아닌, 자바스크립트를 이용해 DOM을 조작할때의 특성 이름을 따르게 됩니다.
+:: 그 예로, HTML에서는 class속성을 통해 해당 요소의 클래스를 지정하지만, 자바스크립트에서는 className을 이용하게됩니다. 결과적으로 JSX에서도 className을 사용합니다.
+```
+
+# 단일 루트 노드 렌더링
+리액트 컴포넌트는 단일 루트 노드만 렌더링 할 수 있습니다.
+```javascript
+    return(
+        <h1>hello world!</h1>
+    )
+```
+구문은 트랜스파일을 거치게되면 아래와 같이 변화됩니다.
+```javascript
+    return React.createElement("h1", null, "hello world!");
+```
+
+이때, 만약 하나의 단일 루트에 대해서가아닌 여러 컴포넌트에 대하여 return일 경우. 즉, 아래와 같을경우
+```javascript
+    return(
+        <h1>hello world!</h1>
+        <h2>Kang Seokju</h2>
+    )
+``` 
+
+이런 문장은 React.createElement를 두번 호출하며, 이 경우 유효하지 않습니다.
+가장 간단한 해결법으로는 모든 반환 값을 하나의 루트 객체에 래핑하는 것입니다.
+```javascript
+    return(
+        <div>
+            <h1>hello world!</h1>
+            <h2>kang Seokju</h2>
+        </div>
+    )
+```
+
+# 조건문
+JSX는 자바스크립트로의 변환과정을 거치게 되며, 이때 if문의 사용은 올바른 용도로 사용되지 못하고 에러를 발생시킵니다.
+어떤 조건에 따라서 JSX에서 사용할 값을 달리하고 싶을때는 삼항식을 사용하거나 조건을 JSX밖으로 이동하여, 변수로 처리할 수 있습니다.
+1. 삼항식 사용
+```javascript
+    render(){
+        return(
+            <div className={condition?"AAA":""}>
+                Hello World
+            </div>
+        )
+    }
+```
+혹은
+```javascript
+    <div>
+        {condition?
+            <span>Hello World</span>
+        :null}
+    </div>
+```
+와 같이 사용이 가능합니다.
+JSX가 트랜스파일을 거치면서 자바스크립트코드가 된 이후에도, 삼항식은 유효하게 작동하게 됩니다.
+
+2. 조건을 JSX밖으로 이동
+간단한 조건문의 표현식에는 삼항식을 이용하여 짧게 처리할 수 있지만, 복잡한 조건식 혹은 조건에 따라 아예 다른 컴포넌트를 렌더링 할 필요가 있는경우에는 이 방법을 사용합니다.
+```javascript
+    render(){
+        let classType;
+        if(condition){
+            classType = "AAA";
+        }
+        return(
+            <div className={classType}>Hello World</div>
+        )
+    }
+```
+```javascript
+    render(){
+        let renderComp;
+        if(condition){
+            renderComp = (
+                <div>
+                    Comp1
+                </div>
+            )
+        }
+        return(
+            <div>
+                {renderComp}
+            </div>
+        )
+    }
+```
+JSX에서는 null, false, undefined를 렌더링하게 되면 아무것도 렌더링 되지 않는다는 특징을 가지고 있습니다.
+그때문에 위의 코드들이 조건에 따라서 오류없이 유효한 렌더링결과를 가지게 됩니다.
+위의 <div>태그에서 className의 속성에서의 경우에도 리액트는 className특성을 지정하지 않게됩니다.
+
+# 주석
+JSX는 결국에는 자바스크립트로 변환되기때문에 HTML주석을 사용하지 않습니다.
+대신, 일반 자바스크립트 주석을 사용 할 수 있으며, 이때 주석의 위치가 자식태그의 위치일 경우에는 중괄호로 감싸 주어야 합니다.
+태그의 속성에서 사용될 경우엔 일반적인 주석처럼 사용하면 됩니다.
+```javascript
+    <div>
+        {/*주석*/}
+        <Info 
+          /*주석*/
+          //주석
+          className="AAA"//주석
+        ></Info>
+    </div>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 아래는 그냥 JSX관련해서 잠깐 궁금했던 사항이라고나할까..
 React소스를 보게 되면 제일 위에 이런 import문이 적혀있는것을 볼 수 있습니다.
